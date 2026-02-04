@@ -172,6 +172,50 @@
 - **构建产物**: APK、AAB 格式
 - **保留策略**: CI 产物 30 天，Release 产物 90 天
 
+### CI/CD 构建错误修复
+
+#### 13. 诊断构建错误
+- 操作时间: 2026-02-04 16:20
+- 操作内容: 检查 GitHub Actions 构建失败原因
+- 发现问题:
+  - 缺少 `gradle-wrapper.jar` 文件
+  - CI 工作流依赖 `./gradlew` 但 wrapper 不完整
+- 结果: 确认问题根源
+
+#### 14. 修复 CI/CD 工作流
+- 操作时间: 2026-02-04 16:20
+- 操作内容: 更新 GitHub Actions 工作流配置
+- 修改内容:
+  - 创建 `gradlew.bat` 文件（Windows 支持）
+  - 在 CI 工作流中添加 `gradle/actions/setup-gradle@v4`
+  - 将所有 `./gradlew` 命令替换为 `gradle`
+  - 移除 `chmod +x gradlew` 步骤（不再需要）
+- 修改文件:
+  - `.github/workflows/android-ci.yml`
+  - `.github/workflows/release.yml`
+  - 新增 `gradlew.bat`
+- 结果: CI/CD 工作流修复完成
+
+#### 15. 提交并推送修复
+- 操作时间: 2026-02-04 16:20
+- 操作内容:
+  - 执行 `git add .` 添加修改文件
+  - 执行 `git commit` 提交修复
+  - 提交信息: "fix: Update CI/CD workflows to use Gradle action instead of gradlew"
+  - 执行 `git push` 推送到远程仓库
+- 提交统计: 3 个文件修改，102 行新增，10 行删除
+- 结果: 修复已成功推送
+
+### 修复总结
+
+- **问题原因**: Gradle wrapper 文件不完整，导致 CI 无法执行构建
+- **解决方案**: 使用 GitHub Actions 的 Gradle action 替代本地 wrapper
+- **优势**:
+  - 无需维护 gradle-wrapper.jar 文件
+  - 自动使用最新版本的 Gradle
+  - 更好的缓存支持，提高构建速度
+  - 跨平台兼容性更好
+
 ---
 
 **备注**: 本文档将持续更新，记录所有重要操作和变更。
