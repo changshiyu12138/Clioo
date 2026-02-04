@@ -216,6 +216,44 @@
   - 更好的缓存支持，提高构建速度
   - 跨平台兼容性更好
 
+### settings.gradle.kts 语法错误修复
+
+#### 16. 诊断构建错误
+- 操作时间: 2026-02-04 16:25
+- 操作内容: 检查 app/build_apk_error 文件
+- 发现问题:
+  - settings.gradle.kts 第 18 行语法错误
+  - 错误信息: "Function invocation 'include(...)' expected" 和 "Too many characters in a character literal"
+  - 原因: 使用了 Groovy 语法 `include ':app'` 而不是 Kotlin DSL 语法
+- 结果: 确认问题根源
+
+#### 17. 修复 settings.gradle.kts
+- 操作时间: 2026-02-04 16:25
+- 操作内容: 修正 Kotlin DSL 语法
+- 修改内容:
+  - 将 `include ':app'` 改为 `include(":app")`
+  - 使用双引号和括号符合 Kotlin DSL 语法规范
+- 修改文件: `settings.gradle.kts`
+- 结果: 语法错误修复完成
+
+#### 18. 提交并推送修复
+- 操作时间: 2026-02-04 16:25
+- 操作内容:
+  - 执行 `git add settings.gradle.kts` 添加修改文件
+  - 执行 `git commit` 提交修复
+  - 提交信息: "fix: Correct Kotlin DSL syntax in settings.gradle.kts"
+  - 执行 `git push` 推送到远程仓库
+- 提交统计: 1 个文件修改，1 行变更
+- 结果: 修复已成功推送
+
+### 语法错误修复总结
+
+- **问题原因**: settings.gradle.kts 混用了 Groovy 和 Kotlin DSL 语法
+- **Groovy 语法**: `include ':app'`（单引号，无括号）
+- **Kotlin DSL 语法**: `include(":app")`（双引号，有括号）
+- **解决方案**: 统一使用 Kotlin DSL 语法
+- **注意事项**: .gradle.kts 文件必须使用 Kotlin DSL 语法，不能混用 Groovy 语法
+
 ---
 
 **备注**: 本文档将持续更新，记录所有重要操作和变更。
