@@ -22,14 +22,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+        run: gradle assembleDebug --stacktrace
 
       - name: Build Release APK
-        run: ./gradlew assembleRelease --stacktrace
+        run: gradle assembleRelease --stacktrace
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
@@ -46,7 +46,7 @@ jobs:
           retention-days: 30
 
       - name: Run Unit Tests
-        run: ./gradlew test --stacktrace
+        run: gradle test --stacktrace
 
       - name: Upload Test Results
         if: always()
@@ -57,7 +57,7 @@ jobs:
           retention-days: 30
 
       - name: Run Lint
-        run: ./gradlew lint --stacktrace
+        run: gradle lint --stacktrace
 
       - name: Upload Lint Results
         if: always()
