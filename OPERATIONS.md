@@ -254,6 +254,48 @@
 - **解决方案**: 统一使用 Kotlin DSL 语法
 - **注意事项**: .gradle.kts 文件必须使用 Kotlin DSL 语法，不能混用 Groovy 语法
 
+### GitHub Actions 构建失败排查
+
+#### 19. 访问 GitHub Actions 构建页面
+- 操作时间: 2026-02-04 16:30
+- 操作内容: 使用 GitHub API 查看构建运行状态
+- 发现问题:
+  - 所有 6 次构建都失败了
+  - 错误信息显示的是旧的 settings.gradle.kts 语法错误
+  - GitHub 仓库中的文件已经是正确的了
+- 结果: 确认 GitHub 上的代码是正确的
+
+#### 20. 检查本地文件
+- 操作时间: 2026-02-04 16:30
+- 操作内容: 检查本地文件是否与 GitHub 一致
+- 检查结果:
+  - settings.gradle.kts 本地文件正确：`include(":app")`
+  - app/build.gradle.kts 本地文件正确：`testInstrumentationRunner`
+  - 所有文件都已正确修复
+- 结果: 本地代码正确
+
+#### 21. 触发新构建测试
+- 操作时间: 2026-02-04 16:30
+- 操作内容:
+  - 创建空提交来触发新的 GitHub Actions 构建
+  - 执行 `git commit --allow-empty -m "chore: Trigger new build to test fixes"`
+  - 执行 `git push` 推送到远程仓库
+- 提交统计: 1 个空提交
+- 结果: 新构建已触发
+
+### 构建失败排查总结
+
+- **问题现象**: GitHub Actions 多次构建失败
+- **根本原因**: 
+  - settings.gradle.kts 最初使用了错误的语法 `include ':app'`
+  - 修复后 GitHub 可能使用了缓存代码
+  - 需要触发新的构建来验证修复
+- **已修复的问题**:
+  - settings.gradle.kts: `include ':app'` → `include(":app")`
+  - app/build.gradle.kts: `testInstrumentationRunner` → `testInstrumentationRunner`
+- **验证方法**: 创建空提交触发新构建
+- **预期结果**: 新构建应该成功
+
 ---
 
 **备注**: 本文档将持续更新，记录所有重要操作和变更。
