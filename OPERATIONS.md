@@ -288,11 +288,17 @@
 - **问题现象**: GitHub Actions 多次构建失败
 - **根本原因**: 
   - settings.gradle.kts 最初使用了错误的语法 `include ':app'`
+  - AndroidManifest.xml 引用了不存在的资源文件（ic_launcher、ic_launcher_round、colors、themes）
   - 修复后 GitHub 可能使用了缓存代码
   - 需要触发新的构建来验证修复
 - **已修复的问题**:
   - settings.gradle.kts: `include ':app'` → `include(":app")`
   - app/build.gradle.kts: `testInstrumentationRunner` → `testInstrumentationRunner`
+  - 添加了缺失的资源文件：
+    - `app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml`
+    - `app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml`
+    - `app/src/main/res/values/colors.xml`
+    - `app/src/main/res/values/themes.xml`
 - **验证方法**: 创建空提交触发新构建
 - **预期结果**: 新构建应该成功
 
