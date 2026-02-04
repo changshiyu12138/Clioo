@@ -105,6 +105,73 @@
 - [ ] 添加搜索功能
 - [ ] 实现分类与标签系统
 
+### Git 仓库配置与推送
+
+#### 8. 初始化 Git 仓库
+- 操作时间: 2026-02-04 16:15
+- 操作内容: 在项目根目录执行 `git init`
+- 结果: Git 仓库初始化成功
+
+#### 9. 创建 .gitignore 文件
+- 操作时间: 2026-02-04 16:15
+- 操作内容: 创建 `.gitignore` 文件
+- 忽略内容:
+  - APK/AAB 构建产物
+  - Gradle 构建缓存
+  - IDE 配置文件（.idea、*.iml）
+  - 密钥文件（*.jks、*.keystore）
+  - 日志文件
+  - 操作系统特定文件
+- 结果: .gitignore 文件创建成功
+
+#### 10. 配置 GitHub Actions 自动构建
+- 操作时间: 2026-02-04 16:15
+- 操作内容: 创建 GitHub Actions 工作流文件
+- 工作流文件:
+  - `.github/workflows/android-ci.yml` - 持续集成工作流
+    - 触发条件: push 到 main/develop 分支、Pull Request
+    - 构建任务: Debug APK、Release APK
+    - 测试任务: 单元测试、Lint 检查
+    - 构建产物上传: 保留 30 天
+  - `.github/workflows/release.yml` - 发布工作流
+    - 触发条件: 推送 v* 标签
+    - 构建任务: Release APK、Release AAB
+    - 自动创建 GitHub Release
+    - 构建产物上传: 保留 90 天
+- 技术实现:
+  - 使用 JDK 17 (Temurin)
+  - 使用 Ubuntu 最新运行环境
+  - 自动生成版本号
+  - 自动生成 Release Notes
+- 结果: GitHub Actions 工作流配置完成
+
+#### 11. 提交代码到本地仓库
+- 操作时间: 2026-02-04 16:15
+- 操作内容:
+  - 执行 `git add .` 添加所有文件
+  - 执行 `git commit` 提交代码
+  - 提交信息: "Initial commit: Android project setup with CI/CD"
+- 提交统计: 18 个文件，737 行新增
+- 结果: 代码提交成功
+
+#### 12. 推送到 GitHub 远程仓库
+- 操作时间: 2026-02-04 16:15
+- 操作内容:
+  - 重命名分支为 main: `git branch -M main`
+  - 添加远程仓库: `git remote add origin https://github.com/changshiyu12138/Clioo.git`
+  - 推送到远程仓库: `git push -u origin main`
+- 推送统计: 35 个对象，9.50 KiB
+- 结果: 代码成功推送到 GitHub
+
+### CI/CD 配置总结
+
+- **远程仓库**: https://github.com/changshiyu12138/Clioo.git
+- **主分支**: main
+- **CI 工作流**: 自动构建、测试、代码检查
+- **CD 工作流**: 自动发布、生成 Release
+- **构建产物**: APK、AAB 格式
+- **保留策略**: CI 产物 30 天，Release 产物 90 天
+
 ---
 
 **备注**: 本文档将持续更新，记录所有重要操作和变更。
