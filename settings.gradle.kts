@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "ClioCollection"
-include ':app'
+include(":app")
